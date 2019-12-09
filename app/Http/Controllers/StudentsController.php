@@ -71,6 +71,8 @@ class StudentsController extends Controller
     public function edit(Student $student)
     {
         //
+        $mahasiswas = student::all();
+        return view('students.edit', ['student' => $student]);
     }
 
     /**
@@ -82,7 +84,14 @@ class StudentsController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        Student::where('id', $student->id)
+        ->update([
+            'nama' => $request->nama,
+            'nrp' => $request->nrp,
+            'email' => $request->email,
+            'jurusan' => $request->jurusan
+        ]);
+        return redirect('/students')->with('status','data mahasiswa di ubah');
     }
 
     /**
@@ -94,5 +103,7 @@ class StudentsController extends Controller
     public function destroy(Student $student)
     {
         //
+        Student::destroy($student->id);
+        return redirect('/students')->with('status','data mahasiswa di hapus');
     }
 }
